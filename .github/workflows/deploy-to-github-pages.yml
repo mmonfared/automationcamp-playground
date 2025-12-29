@@ -41,9 +41,13 @@ jobs:
       
       - name: Build Angular app
         run: |
-          # Extract repository name for base-href
-          REPO_NAME=$(echo ${{ github.repository }} | cut -d'/' -f2)
-          npm run build:prod -- --base-href=/$REPO_NAME/
+          # For custom domain, use root path
+          npm run build:prod -- --base-href=/
+      
+      - name: Fix SPA routing for GitHub Pages
+        run: |
+          # Copy index.html to 404.html to handle SPA routing
+          cp dist/index.html dist/404.html
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
